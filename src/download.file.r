@@ -6,11 +6,17 @@ gsub2 <- function(pattern, replacement, x, def = 0, ...) {
         def
     )
 }
-download.file <- function(urls = c(
-                              "http://wsjkw.sh.gov.cn/yqtb/index.html",
-                              "https://wsjkw.sh.gov.cn/yqtb/index_2.html"
-                          )) { # nolint
+download.file <- function(url="http://wsjkw.sh.gov.cn/yqtb/",
+                          page.len=3) {
     # browser()
+    # 遍历页面数
+    page.seq <- 2:page.len
+    # 遍历网页url作成
+    urls <- paste0(url, "index_", page.seq, ".html")
+    urls <-  c(
+        "http://wsjkw.sh.gov.cn/yqtb/index.html",
+        urls
+    )
     href <- NULL
     ttl <- NULL
     update.time <- NULL
