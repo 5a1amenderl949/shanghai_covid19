@@ -95,6 +95,7 @@ download.file <- function(url="http://wsjkw.sh.gov.cn/yqtb/",
         "\\1",
         ttl[need.fix]
     ))
+    d$`新增本土确诊（含无症状）` <- d$新增本土新冠肺炎确诊病例 + d$新增本土无症状感染者
     d
 }
 
