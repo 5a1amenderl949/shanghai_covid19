@@ -6,14 +6,14 @@ gsub2 <- function(pattern, replacement, x, def = 0, ...) {
         def
     )
 }
-download.file <- function(url="http://wsjkw.sh.gov.cn/yqtb/",
-                          page.len=3) {
+download.file <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
+                          page.len = 3) {
     # browser()
     # 遍历页面数
     page.seq <- 2:page.len
     # 遍历网页url作成
     urls <- paste0(url, "index_", page.seq, ".html")
-    urls <-  c(
+    urls <- c(
         "http://wsjkw.sh.gov.cn/yqtb/index.html",
         urls
     )
@@ -30,6 +30,7 @@ download.file <- function(url="http://wsjkw.sh.gov.cn/yqtb/",
         href <- c(href, unlist(nodes %>% html_attr("href")))
         ttl <- c(ttl, unlist(nodes %>% html_text()))
     }
+
     # 把每天发布的确诊信息网页url提取出来
     d <- data.frame(
         href = href,
@@ -45,6 +46,7 @@ download.file <- function(url="http://wsjkw.sh.gov.cn/yqtb/",
     use <- grepl(pat, ttl)
     ttl <- ttl[use]
     d <- d[use, ]
+    d$href <- paste0("http://wsjkw.sh.gov.cn", d$href)
     d$date <- as.Date(gsub2(
         ".+([[:digit:]]{4}年[[:digit:]]月[[:digit:]]+日).+",
         "\\1",
@@ -95,8 +97,28 @@ download.file <- function(url="http://wsjkw.sh.gov.cn/yqtb/",
         "\\1",
         ttl[need.fix]
     ))
+
     d$`新增本土确诊（含无症状）` <- d$新增本土新冠肺炎确诊病例 + d$新增本土无症状感染者
-    d
+
+    # 无症状感染者1455，男，21岁，居住于长宁区，均为本市闭环隔离管控人员，其间新冠病毒核酸检测结果异常，经市疾控中心复核结果为阳性。
+    # 无症状感染者1580，男，27岁，居住于杨浦区，在风险人群筛查中发现新冠病毒核酸检测结果异常，即被隔离管控。
+    num.closed <- sapply(seq_len(nrow(d)), function(i) {
+        url <- d$href[i]
+        index.page <- read_html(url)
+        article <- index.page %>% html_elements("#ivs_content") %>% html_text()
+        ## 字符串匹配
+        # 闭环隔离管控人数调查模式
+        pat.closed <- ".+无症状感染者(\\d+)，.+闭环隔离管控人员.+"
+        as.integer(gsub2(pat.closed, "\\1", article))
+        # 风险人群筛查调查模式
+        # pat.crisis <- ".+无症状感染者(\\d+)，.+风险人群筛查.+"
+        # num.crisis <- gsub2(pat.crisis, "\\1", article)
+    })
+    d$无症状闭环隔离管控人数 <- num.closed
+
+    d$无症状风险人群筛查人数 <- d$新增本土无症状感染者 - d$无症状闭环隔离管控人数
+    d$非管控区域病例比例 <- d$无症状风险人群筛查人数 / d$新增本土无症状感染者
+    d[d$date >= as.Date("2022-03-01"), ]
 }
 
 if (FALSE) {
