@@ -13,16 +13,14 @@ download.file <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
     page.seq <- 2:page.len
     # 遍历网页url作成
     urls <- paste0(url, "index_", page.seq, ".html")
-    urls <- c(
-        "http://wsjkw.sh.gov.cn/yqtb/index.html",
-        urls
-    )
+    urls <- c(url, urls)
     href <- NULL
     ttl <- NULL
     update.time <- NULL
     for (i in seq_along(urls)) {
         index.page <- read_html(urls[i])
         nodes <- index.page %>% html_elements(".uli16 a")
+        # browser()
         update.time <- c(
             update.time,
             index.page %>% html_elements(".time") %>% html_text()
@@ -117,7 +115,7 @@ download.file <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
     d$无症状闭环隔离管控人数 <- num.closed
 
     d$无症状风险人群筛查人数 <- d$新增本土无症状感染者 - d$无症状闭环隔离管控人数
-    d$非管控区域病例比例 <- d$无症状风险人群筛查人数 / d$新增本土无症状感染者
+    d$非管控区域病例比例 <- d$无症状风险人群筛查人数 / d$新增本土无症状感染者 * 100
     d[d$date >= as.Date("2022-03-01"), ]
 }
 
