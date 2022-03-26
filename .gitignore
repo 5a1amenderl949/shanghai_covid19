@@ -39,3 +39,4 @@ vignettes/*.pdf
 .Renviron
 src/src.Rproj
 /awk/
+*.png
