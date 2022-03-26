@@ -58,7 +58,7 @@ extract.district <- function(urls = d[, c("href", "date")]) {
         is.baby <- grepl("月龄", asymptomatic$年龄)
         asymptomatic$年龄[is.baby] <- as.integer(gsub("月龄", "", asymptomatic$年龄[is.baby])) / 12
         asymptomatic$年龄[!is.baby] <- as.integer(gsub("岁", "", asymptomatic$年龄[!is.baby]))
-        asymptomatic$地区 <- str_extract(asymptomatic$地区, "(?<=于|为).{2,3}?区")
+        asymptomatic$地区 <- str_extract(asymptomatic$地区, "(?<=于|为).{2,3}?(?<!校)区")
         asymptomatic
     })
     d.asym <- rbindlist(d.asym)
