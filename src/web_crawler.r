@@ -7,7 +7,7 @@ gsub2 <- function(pattern, replacement, x, def = 0, ...) {
         def
     )
 }
-download.file <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
+web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
                           page.len = 3,
                           d.old = d.basic,
                           add = TRUE) {
@@ -143,6 +143,6 @@ download.file <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
 }
 
 if (FALSE) {
-    source("download.file.r")
-    d.basic <- download.file()
+    source("web_crawler.r")
+    d.basic <- web_crawler()
 }
