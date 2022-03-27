@@ -42,3 +42,4 @@ src/src.Rproj
 *.png
 shanghai_covid19.Rproj
 *.rdata
+/bak/
