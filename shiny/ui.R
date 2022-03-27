@@ -22,6 +22,12 @@ bootstrapPage(
             sidebarLayout(
                 sidebarPanel(
                     span(tags$i(h6("数据来源于上海卫健委官方网站。")), style = "color:#045a8d"),
+                    selectInput(
+                        "plot_type",
+                        "确诊类型：",
+                        choices = c("确诊信息", "无症状信息"),
+                        selected = "无症状信息"
+                    ),
                     pickerInput("地区", "地区：",
                         choices = disctrict,
                         options = list(`actions-box` = TRUE, `none-selected-text` = "请选择地区！"),

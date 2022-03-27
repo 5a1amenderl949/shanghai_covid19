@@ -7,16 +7,18 @@ out_cols <- c(
     "新增本土确诊（含无症状）", "无症状闭环隔离管控人数", "无症状风险人群筛查人数",
     "非管控区域病例比例"
 )
+
 function(input, output) {
     # Fill in the spot we created for a plot
     output$new_txt <- renderText({
-        paste0(paste(input$地区, collapse = "，"), "每日新增确诊人数")
+        paste0(paste(input$地区, collapse = "，"), "每日新增人数")
     })
     output$disctrict_plot <- renderPlot({
         # 绘制每日新增人数
         # browser()
-        d.info <- info$无症状信息[info$无症状信息$地区 %in% input$地区 &
-            info$无症状信息$日期 >= input$开始时间, ]
+        d.info <- info[[input$plot_type]]
+        d.info <- d.info[d.info$地区 %in% input$地区 &
+            d.info$日期 >= input$开始时间, ]
         plot.district(
             d.info = d.info,
             title = ""
@@ -24,12 +26,13 @@ function(input, output) {
     })
 
     output$cumsum_txt <- renderText({
-        paste0(paste(input$地区, collapse = "，"), "累计新增确诊人数")
+        paste0(paste(input$地区, collapse = "，"), "累计新增人数")
     })
     output$disctrict_plot_cumulative <- renderPlot({
         # 绘制累计新增人数
-        d.info <- info$无症状信息[info$无症状信息$地区 %in% input$地区 &
-            info$无症状信息$日期 >= input$开始时间, ]
+        d.info <- info[[input$plot_type]]
+        d.info <- d.info[d.info$地区 %in% input$地区 &
+            d.info$日期 >= input$开始时间, ]
         plot.district(
             d.info = d.info,
             title = "",
