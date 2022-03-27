@@ -12,7 +12,20 @@
   - [x] 非管控区域病例比例
   - [x] 数据一览及下载
 
-## 2. dashboard截图
+## 2. 执行手顺
+```
+# 爬取上海卫健委网站
+source("web_crawler.r")
+d.basic <- web_crawler()
+
+# 提取确诊和无症状感染者信息
+source("extract_info.r")
+info <- extract_info()
+
+# 在RStuido中进入shiny文件夹，Run App
+
+```
+## 3. dashboard截图
 ![地区病例趋势](screenshot/截屏1.png)
 ![非管控区域病例比例](screenshot/截屏2.png)
 ![详细数据](screenshot/截屏3.png)
