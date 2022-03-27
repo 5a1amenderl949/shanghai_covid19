@@ -126,4 +126,6 @@ extract_info <- function(urls = d.basic[, c("href", "date")]) {
 if (FALSE) {
     source("extract_info.r")
     info <- extract_info()
+    write.csv(d.basic, "../output/上海疫情感染信息一览.csv", row.names = FALSE)
+    write.csv(d.basic, "../output/上海疫情感染信息一览.csv", row.names = FALSE)
 }

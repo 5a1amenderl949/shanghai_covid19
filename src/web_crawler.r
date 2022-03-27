@@ -8,19 +8,20 @@ gsub2 <- function(pattern, replacement, x, def = 0, ...) {
     )
 }
 web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
-                          page.len = 3,
-                          d.old = d.basic,
-                          add = TRUE) {
+                        page.len = 3,
+                        d.old = d.basic,
+                        add = TRUE) {
 
     # 数据追加的情况
     if (add) {
-        if (!exists("d.old"))
-            stop("原有数据不存在")
-        else
-            latest.date <- max(d.old$date)
+        if (!exists("d.old")) {
+              stop("原有数据不存在")
+          } else {
+              latest.date <- max(d.old$date)
+          }
     }
-        
-    
+
+
     # 遍历页面数
     page.seq <- 2:page.len
     # 遍历网页url作成
@@ -67,7 +68,7 @@ web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
     idx.latest <- which(d$date > latest.date)
     ttl <- ttl[idx.latest]
     d <- d[idx.latest, ]
-    
+
     d$href <- paste0("http://wsjkw.sh.gov.cn", d$href)
 
     d$新增本土新冠肺炎确诊病例 <- as.integer(gsub2(
@@ -121,7 +122,9 @@ web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
         # browser()
         url <- d$href[i]
         index.page <- read_html(url)
-        article <- index.page %>% html_elements("#ivs_content") %>% html_text()
+        article <- index.page %>%
+            html_elements("#ivs_content") %>%
+            html_text()
         ## 字符串匹配
         # 闭环隔离管控人数调查模式
         # 无症状感染者2338—无症状感染者2363，居住于崇明区，均为本市闭环隔离管控人员
@@ -136,13 +139,15 @@ web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
     d$无症状风险人群筛查人数 <- d$新增本土无症状感染者 - d$无症状闭环隔离管控人数
     d$非管控区域病例比例 <- d$无症状风险人群筛查人数 / d$新增本土无症状感染者 * 100
     d[d$date >= MIN.DATE, ]
-    if (add)
-        rbind(d, d.old)
-    else
-        d
+    if (add) {
+          rbind(d, d.old)
+      } else {
+          d
+      }
 }
 
 if (FALSE) {
     source("web_crawler.r")
     d.basic <- web_crawler()
+    write.csv(d.basic, "../output/上海疫情感染信息一览.csv", row.names = FALSE)
 }
