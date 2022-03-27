@@ -54,10 +54,6 @@ bootstrapPage(
         tabPanel(
             "非管控区域病例比例", plotOutput("ratio_plot")
         ),
-        # tabPanel(
-        #     "非管控区域病例比例",
-        #     plotOutput("disctrict_plot")
-        # ),
         tabPanel(
             "详细数据",
             selectInput(
@@ -66,7 +62,7 @@ bootstrapPage(
                 choices = c("全体数据一览", "确诊信息", "无症状信息"),
                 selected = "全体数据一览"
             ),
-            numericInput("maxrows_all", "显示最大行数", 10),
+            numericInput("maxrows_all", "显示最大行数", 5),
             dataTableOutput("rawtable_all"),
             downloadButton("downloadCsv", "下载csv文件"), shiny::tags$br(), shiny::tags$br(),
             "数据来源于：", tags$a(

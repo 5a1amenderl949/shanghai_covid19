@@ -57,4 +57,23 @@ function(input, output) {
             head(info$无症状信息, input$maxrows_all)
         }
     })
+    # 下载csv文件
+    output$downloadCsv <- downloadHandler(
+        filename = function() {
+            paste0(input$data_type, ".csv")
+        },
+        content = function(file) {
+            # 总体数据一览
+            if (input$data_type == "全体数据一览") {
+                d_csv <- d.basic[, out_cols]
+            } else if (input$data_type == "确诊信息") {
+                # 确诊信息
+                d_csv <- info$确诊信息
+            } else {
+                # 无症状信息
+                d_csv <- info$无症状信息
+            }
+            write.csv(d_csv, file)
+        }
+    )
 }
