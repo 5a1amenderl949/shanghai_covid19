@@ -56,12 +56,17 @@ if (FALSE) {
 
 # 按区域画每日新增人数
 plot.district <- function(d.info = info$确诊信息,
-                          title = "按区域分每日新增人数") {
+                          title = "按区域分每日新增人数",
+                          is.cumsum = FALSE) {
     dd <- aggregate(
         d.info$病例,
         list(日期 = d.info$日期, 地区 = d.info$地区),
         length
     )
+    if (is.cumsum) {
+        dd <- dd[order(dd$地区, dd$日期), ]
+        dd <- dd %>% group_by(地区) %>% arrange(地区) %>% mutate(x = cumsum(x))
+    }
     p <- ggplot(dd) +
         geom_line(aes(x = 日期, y = x, color = 地区)) +
         labs(

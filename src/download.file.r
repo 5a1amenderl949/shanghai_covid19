@@ -1,5 +1,6 @@
 library(rvest)
 library(dplyr)
+MIN.DATE <- as.Date("2022-03-01")
 gsub2 <- function(pattern, replacement, x, def = 0, ...) {
     ifelse(grepl(pattern, x),
         gsub(pattern, replacement, x, ...),
@@ -134,7 +135,7 @@ download.file <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
 
     d$无症状风险人群筛查人数 <- d$新增本土无症状感染者 - d$无症状闭环隔离管控人数
     d$非管控区域病例比例 <- d$无症状风险人群筛查人数 / d$新增本土无症状感染者 * 100
-    d[d$date >= as.Date("2022-03-01"), ]
+    d[d$date >= MIN.DATE, ]
     if (add)
         rbind(d, d.old)
     else

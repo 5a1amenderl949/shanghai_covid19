@@ -74,8 +74,11 @@ bootstrapPage(
             "关于",
             tags$div(
                 tags$h4("上海疫情趋势分析"),
-                "关于大家关注我的github", shiny::tags$br(),
-                tags$a(href = "https://github.com/kekincai", "kekincai")
+                "关于大家关注我的github",
+                tags$a(href = "https://github.com/kekincai", "kekincai"),
+                shiny::tags$br(), shiny::tags$br(),
+                "参考项目",
+                tags$a(href = "https://shiny.rstudio.com/gallery/covid19-tracker.html", "covid19-tracker")
             )
         )
     )
