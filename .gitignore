@@ -41,3 +41,4 @@ src/src.Rproj
 /awk/
 *.png
 shanghai_covid19.Rproj
+*.rdata
