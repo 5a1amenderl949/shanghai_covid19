@@ -47,65 +47,44 @@ bootstrapPage(
         ),
         tabPanel(
             "详细数据",
-            #     tabsetPanel(
-            #         tabPanel(
-            #             "总体数据一览", numericInput("maxrows_all", "显示最大行数", 25),
-            #             verbatimTextOutput("rawtable_all"),
-            #             downloadButton("downloadCsv", "下载csv文件"), shiny::tags$br(), shiny::tags$br(),
-            #             "数据来源于：", tags$a(
-            #                 href = "http://wsjkw.sh.gov.cn/yqtb/",
-            #                 "上海卫健委官方网站"
-            #             )
-            #         ),
-            #         tabPanel(
-            #             "确诊者信息", numericInput("maxrows_diag", "显示最大行数", 25),
-            #             verbatimTextOutput("rawtable"),
-            #             downloadButton("downloadCsv", "下载csv文件"), shiny::tags$br(), shiny::tags$br(),
-            #             "数据来源于：", tags$a(
-            #                 href = "http://wsjkw.sh.gov.cn/yqtb/",
-            #                 "上海卫健委官方网站"
-            #             )
-            #         ),
-            #         tabPanel(
-            #             "无症状感染者信息", numericInput("maxrows_asym", "显示最大行数", 25),
-            #             verbatimTextOutput("rawtable"),
-            #             downloadButton("downloadCsv", "下载csv文件"), shiny::tags$br(), shiny::tags$br(),
-            #             "数据来源于：", tags$a(
-            #                 href = "http://wsjkw.sh.gov.cn/yqtb/",
-            #                 "上海卫健委官方网站"
-            #             )
-            #         )
-            #     )
-            # ),
-            # tabPanel(
-            #     "关于",
-            #     tags$div(
-            #         tags$h4("上海疫情趋势分析"),
-            #         "关于大家关注我的github", shiny::tags$br(),
-            #         tags$a(href = "https://github.com/kekincai", "kekincai")
-            #     )
+            tabsetPanel(
+                tabPanel(
+                    "总体数据一览", numericInput("maxrows_all", "显示最大行数", 10),
+                    dataTableOutput("rawtable_all"),
+                    downloadButton("downloadCsv", "下载csv文件"), shiny::tags$br(), shiny::tags$br(),
+                    "数据来源于：", tags$a(
+                        href = "http://wsjkw.sh.gov.cn/yqtb/",
+                        "上海卫健委官方网站"
+                    )
+                )
+                # ),
+                # tabPanel(
+                #     "确诊者信息", numericInput("maxrows_diag", "显示最大行数", 25),
+                #     verbatimTextOutput("rawtable"),
+                #     downloadButton("downloadCsv", "下载csv文件"), shiny::tags$br(), shiny::tags$br(),
+                #     "数据来源于：", tags$a(
+                #         href = "http://wsjkw.sh.gov.cn/yqtb/",
+                #         "上海卫健委官方网站"
+                #     )
+                # ),
+                # tabPanel(
+                #     "无症状感染者信息", numericInput("maxrows_asym", "显示最大行数", 25),
+                #     verbatimTextOutput("rawtable"),
+                #     downloadButton("downloadCsv", "下载csv文件"), shiny::tags$br(), shiny::tags$br(),
+                #     "数据来源于：", tags$a(
+                #         href = "http://wsjkw.sh.gov.cn/yqtb/",
+                #         "上海卫健委官方网站"
+                #     )
+                # )
+            )
+        ),
+        tabPanel(
+            "关于",
+            tags$div(
+                tags$h4("上海疫情趋势分析"),
+                "关于大家关注我的github", shiny::tags$br(),
+                tags$a(href = "https://github.com/kekincai", "kekincai")
+            )
         )
     )
 )
-# fluidPage(
-
-#     # Give the page a title
-#     titlePanel("上海疫情趋势分析"),
-
-#     # Generate a row with a sidebar
-#     sidebarLayout(
-#         # Define the sidebar with one input
-#         sidebarPanel(
-#             selectInput("地区", "地区:",
-#                 choices = disctrict
-#             ),
-#             hr(),
-#             helpText("数据来源于上海卫健委官方网站。")
-#         ),
-
-#         # Create a spot for the barplot
-#         mainPanel(
-#             plotOutput("phonePlot")
-#         )
-#     )
-# )
