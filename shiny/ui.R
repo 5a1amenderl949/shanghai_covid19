@@ -52,6 +52,13 @@ bootstrapPage(
             )
         ),
         tabPanel(
+            "非管控区域病例比例", plotOutput("ratio_plot")
+        ),
+        # tabPanel(
+        #     "非管控区域病例比例",
+        #     plotOutput("disctrict_plot")
+        # ),
+        tabPanel(
             "详细数据",
             selectInput(
                 "data_type",

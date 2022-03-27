@@ -39,6 +39,10 @@ function(input, output) {
             is.cumsum = TRUE
         )
     })
+    # 绘制非管控区域病例比例
+    output$ratio_plot <- renderPlot({
+        plot.ratio()
+    })
 
     # 输出数据一览
     output$rawtable_all <- renderDataTable({
