@@ -57,12 +57,18 @@ ui <- bootstrapPage(
                         selected = disctrict[1],
                         multiple = TRUE
                     ),
-                    sliderInput("开始时间",
-                        "开始时间：",
+                    dateRangeInput(
+                        "时间范围",
+                        "时间范围：",
+                        start = MIN.DATE,
+                        end = Sys.Date(),
                         min = MIN.DATE,
                         max = Sys.Date(),
-                        value = MIN.DATE,
-                        timeFormat = "%m月%d日"
+                        format = "yyyy-mm-dd",
+                        startview = "month",
+                        weekstart = 1,
+                        language = "zh-CN",
+                        separator = " 到 "
                     ),
                     selectInput(
                         "is_log",
@@ -125,7 +131,8 @@ server <- function(input, output) {
         is_log <- ifelse(input$is_log == "是", TRUE, FALSE)
         d.info <- info[[input$plot_type]]
         d.info <- d.info[d.info$地区 %in% input$地区 &
-            d.info$日期 >= input$开始时间, ]
+            d.info$日期 >= input$时间范围[1] &
+            d.info$日期 <= input$时间范围[2], ]
         plot.district(
             d.info = d.info,
             title = "",
@@ -141,7 +148,8 @@ server <- function(input, output) {
         is_log <- ifelse(input$is_log == "是", TRUE, FALSE)
         d.info <- info[[input$plot_type]]
         d.info <- d.info[d.info$地区 %in% input$地区 &
-            d.info$日期 >= input$开始时间, ]
+            d.info$日期 >= input$时间范围[1] &
+            d.info$日期 <= input$时间范围[2], ]
         plot.district(
             d.info = d.info,
             title = "",
