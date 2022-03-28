@@ -1,6 +1,26 @@
 library(ggplot2)
 library(reshape2)
 
+# Cairo包的PNG设备似乎无法显示中文字符，强制使用R自身的png()设备
+options(shiny.usecairo = FALSE)
+
+# 请忽略以下代码，它只是为了解决ShinyApps上没有中文字体的问题
+font_home <- function(path = "") file.path("~", ".fonts", path)
+if (Sys.info()[["sysname"]] == "Linux" &&
+    system("locate wqy-zenhei.ttc") != 0 &&
+    !file.exists(font_home("wqy-zenhei.ttc"))) {
+    if (!file.exists("wqy-zenhei.ttc")) {
+          curl::curl_download(
+              "https://github.com/rstudio/shiny-examples/releases/download/v0.10.1/wqy-zenhei.ttc",
+              "wqy-zenhei.ttc"
+          )
+      }
+    dir.create(font_home())
+    file.copy("wqy-zenhei.ttc", font_home())
+    system2("fc-cache", paste("-f", font_home()))
+}
+rm(font_home)
+
 # 保存图片
 save.plot <- function(p,
                       fn = "../out/确诊信息.png") {
@@ -16,12 +36,13 @@ plot.new <- function(d.new = d.new,
         xlab("日期") +
         ylab("病例数") +
         theme(
-            text = element_text(family = "Kai"),
+            # text = element_text(family = "Kai"),
             legend.title = element_blank(),
             legend.position = c("top")
         )
-    if (is_log)
-        p <- p + scale_y_continuous(trans="log10")
+    if (is_log) {
+        p <- p + scale_y_continuous(trans = "log10")
+    }
     p
 }
 
@@ -69,7 +90,10 @@ plot.district <- function(d.info = info$确诊信息,
     )
     if (is.cumsum) {
         dd <- dd[order(dd$地区, dd$日期), ]
-        dd <- dd %>% group_by(地区) %>% arrange(地区) %>% mutate(x = cumsum(x))
+        dd <- dd %>%
+            group_by(地区) %>%
+            arrange(地区) %>%
+            mutate(x = cumsum(x))
     }
     p <- ggplot(dd) +
         geom_line(aes(x = 日期, y = x, color = 地区)) +
@@ -78,8 +102,9 @@ plot.district <- function(d.info = info$确诊信息,
             x = "日期", y = "病例数"
         ) +
         theme(text = element_text(family = "Kai"))
-    if (is_log)
-        p <- p + scale_y_continuous(trans="log10")
+    if (is_log) {
+          p <- p + scale_y_continuous(trans = "log10")
+      }
     p
 }
 
