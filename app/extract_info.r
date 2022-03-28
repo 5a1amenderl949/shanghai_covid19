@@ -123,9 +123,12 @@ extract_info <- function(urls = d.basic[, c("href", "date")]) {
     )
 }
 
-if (FALSE) {
-    source("extract_info.r")
+if (TRUE) {
+    # source("extract_info.r")
     info <- extract_info()
-    write.csv(info$确诊信息, "../output/上海疫情确诊信息一览.csv", row.names = FALSE)
-    write.csv(info$无症状信息, "../output/上海疫情无症状信息一览.csv", row.names = FALSE)
+    # 提取地区并加上上海全体
+    disctrict <- unique(c(info$无症状信息$地区, info$确诊信息$地区))
+    disctrict <- disctrict[!is.na(disctrict)]
+    # write.csv(info$确诊信息, "../output/上海疫情确诊信息一览.csv", row.names = FALSE)
+    # write.csv(info$无症状信息, "../output/上海疫情无症状信息一览.csv", row.names = FALSE)
 }

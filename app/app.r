@@ -10,19 +10,13 @@ if (!require(shinyWidgets)) install.packages("shinyWidgets", repos = "http://cra
 if (!require(magrittr)) install.packages("magrittr", repos = "http://cran.us.r-project.org")
 
 # browser()
+message("导入画图函数")
 source("plot.r")
-# 爬取上海卫健委网站
+message("爬取上海卫健委网站")
 source("web_crawler.r")
-d.basic <- read.csv("上海疫情感染信息一览.csv")
-d.basic <- web_crawler()
 
-# 提取确诊和无症状感染者信息
+message("提取确诊和无症状感染者信息")
 source("extract_info.r")
-info <- extract_info()
-
-# 提取地区并加上上海全体
-disctrict <- unique(c(info$无症状信息$地区, info$确诊信息$地区))
-disctrict <- disctrict[!is.na(disctrict)]
 
 # 总体数据一览
 out_cols <- c(

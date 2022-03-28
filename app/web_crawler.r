@@ -148,8 +148,11 @@ web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
       }
 }
 
-if (FALSE) {
-    source("web_crawler.r")
+if (TRUE) {
+    # source("web_crawler.r")
+    fn <- "上海疫情感染信息一览.csv"
+    message("读取：", fn)
+    d.basic <- read.csv(fn)
     d.basic <- web_crawler()
-    write.csv(d.basic, "../output/上海疫情感染信息一览.csv", row.names = FALSE)
+    # write.csv(d.basic, "../output/上海疫情感染信息一览.csv", row.names = FALSE)
 }
