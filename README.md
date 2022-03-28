@@ -25,7 +25,9 @@ info <- extract_info()
 # 在RStuido中进入shiny文件夹，Run App
 
 ```
-## 3. dashboard截图
+## 3. dashboard说明
+1. 服务托管于[shinyapps](https://kapaul.shinyapps.io/shanghai_covid19/)
+2. dashboard截图
 ![地区病例趋势](screenshot/截屏1.png)
 ![非管控区域病例比例](screenshot/截屏2.png)
 ![详细数据](screenshot/截屏3.png)
