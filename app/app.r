@@ -38,7 +38,13 @@ ui <- bootstrapPage(
             "地区病例趋势",
             sidebarLayout(
                 sidebarPanel(
-                    span(tags$i(h6("数据来源于上海卫健委官方网站。")), style = "color:#045a8d"),
+                    span(tags$i(
+                        h6("数据来源于："),
+                        tags$a(
+                            href = "http://wsjkw.sh.gov.cn/yqtb/",
+                            h6("上海卫健委官方网站")
+                        )
+                    ), style = "color:#045a8d"),
                     selectInput(
                         "plot_type",
                         "确诊类型：",
