@@ -28,6 +28,8 @@ save.plot <- function(p,
     ggsave(fn, p, width = 16, height = 8, dpi = 600)
 }
 
+theme_set(theme_gray(base_size = 18))
+
 # 每日新增人数图
 plot.new <- function(d.new = d.new,
                      is_log = FALSE) {
@@ -36,10 +38,12 @@ plot.new <- function(d.new = d.new,
         xlab("日期") +
         ylab("病例数") +
         theme(
-            # text = element_text(family = "Kai"),
+            text = element_text(family = "Kai"),
+            axis.text.x=element_text(angle=60, hjust=1),
             legend.title = element_blank(),
             legend.position = c("top")
-        )
+        ) +
+        scale_x_date(date_breaks = "1 day", date_labels =  "%m月%d日")
     if (is_log) {
         p <- p + scale_y_continuous(trans = "log10")
     }
@@ -68,7 +72,9 @@ plot.ratio <- function(d.ratio = d.basic[d.basic$非管控区域病例比例 < 1
             title = "非管控区域病例比例",
             x = "日期", y = "%"
         ) +
-        theme(text = element_text(family = "Kai"))
+        theme(text = element_text(family = "Kai"),
+              axis.text.x=element_text(angle=60, hjust=1)) +
+        scale_x_date(date_breaks = "1 day", date_labels =  "%m月%d日")
     p
 }
 
@@ -101,7 +107,9 @@ plot.district <- function(d.info = info$确诊信息,
             title = title,
             x = "日期", y = "病例数"
         ) +
-        theme(text = element_text(family = "Kai"))
+        theme(text = element_text(family = "Kai"),
+              axis.text.x=element_text(angle=60, hjust=1)) +
+        scale_x_date(date_breaks = "1 day", date_labels =  "%m月%d日")
     if (is_log) {
           p <- p + scale_y_continuous(trans = "log10")
       }
@@ -133,7 +141,9 @@ plot.by.group <- function(d.info = info$确诊信息,
             title = title,
             x = group, y = "年龄"
         ) +
-        theme(text = element_text(family = "Kai"))
+        theme(text = element_text(family = "Kai"),
+              axis.text.x=element_text(angle=60, hjust=1)) +
+        scale_x_date(date_breaks = "1 day", date_labels =  "%m月%d日")
     p
 }
 
