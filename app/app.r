@@ -68,8 +68,8 @@ ui <- bootstrapPage(
                 ),
                 mainPanel(
                     tabsetPanel(
-                        tabPanel("今日新增", textOutput("new_txt"), plotOutput("disctrict_plot")),
-                        tabPanel("累计新增", textOutput("cumsum_txt"), plotOutput("disctrict_plot_cumulative"))
+                        tabPanel("今日新增", htmlOutput("new_txt"), plotOutput("disctrict_plot")),
+                        tabPanel("累计新增", htmlOutput("cumsum_txt"), plotOutput("disctrict_plot_cumulative"))
                     )
                 )
             )
@@ -110,8 +110,8 @@ ui <- bootstrapPage(
 server <- function(input, output) {
 
     # Fill in the spot we created for a plot
-    output$new_txt <- renderText({
-        paste0(paste(input$地区, collapse = "，"), "每日新增人数")
+    output$new_txt <- renderUI({
+        HTML(paste0("<h4>", paste(input$地区, collapse = "，"), "每日新增人数", "</h4>"))
     })
     output$disctrict_plot <- renderPlot({
         # 绘制每日新增人数
@@ -127,8 +127,8 @@ server <- function(input, output) {
         )
     })
 
-    output$cumsum_txt <- renderText({
-        paste0(paste(input$地区, collapse = "，"), "累计新增人数")
+    output$cumsum_txt <- renderUI({
+        HTML("<h4>", paste0(paste(input$地区, collapse = "，"), "累计新增人数", "</h4>"))
     })
     output$disctrict_plot_cumulative <- renderPlot({
         # 绘制累计新增人数
