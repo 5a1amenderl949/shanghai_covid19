@@ -13,13 +13,13 @@ extract_info <- function(urls = d.basic[, c("href", "date")]) {
         pat.diag <- "病例\\d*[，：][男女]，\\d+岁，[(居住于)(居住地为)][\u4e00-\u9fa5]+区"
         diagnosed <- NULL
         if (grepl(pat.diag, article)) {
-              diagnosed <- unlist(str_extract_all(article, pat.diag))
-          } else {
+            diagnosed <- unlist(str_extract_all(article, pat.diag))
+        } else {
             # 病例1，居住于徐汇区
             pat.diag <- "病例\\d*，居住于[\u4e00-\u9fa5]+区"
             if (grepl(pat.diag, article)) {
-                  diagnosed <- c(diagnosed, unlist(str_extract_all(article, pat.diag)))
-              }
+                diagnosed <- c(diagnosed, unlist(str_extract_all(article, pat.diag)))
+            }
             # 病例20—病例27，居住于嘉定区
             pat.diag <- "病例\\d*(—病例\\d*)，居住于[\u4e00-\u9fa5]+区"
             if (grepl(pat.diag, article)) {
@@ -39,13 +39,13 @@ extract_info <- function(urls = d.basic[, c("href", "date")]) {
         pat.asym <- "无症状感染者\\d*[，：][男女]，\\d+岁(，[(居住于)(居住地为)][\u4e00-\u9fa5]+区)?"
         asymptomatic <- NULL
         if (grepl(pat.asym, article)) {
-              asymptomatic <- unlist(str_extract_all(article, pat.asym))
-          } else {
+            asymptomatic <- unlist(str_extract_all(article, pat.asym))
+        } else {
             # 无症状感染者2631，居住于崇明区
             pat.asym <- "无症状感染者\\d*，居住于[\u4e00-\u9fa5]+区"
             if (grepl(pat.asym, article)) {
-                  asyms <- c(asymptomatic, unlist(str_extract_all(article, pat.asym)))
-              }
+                asyms <- c(asymptomatic, unlist(str_extract_all(article, pat.asym)))
+            }
             # 无症状感染者1937—无症状感染者2162，居住于嘉定区
             pat.asym <- "无症状感染者\\d*(—无症状感染者\\d*)，居住于[\u4e00-\u9fa5]+区"
             if (grepl(pat.asym, article)) {
@@ -64,7 +64,6 @@ extract_info <- function(urls = d.basic[, c("href", "date")]) {
 
         list(日期 = urls$date[i], 确诊信息 = diagnosed, 无症状信息 = asymptomatic)
     })
-    # browser()
     # 确诊信息数据作成
     d.diag <- lapply(d.ls, function(dd) {
         if (is.null(dd$确诊信息)) {
@@ -74,17 +73,16 @@ extract_info <- function(urls = d.basic[, c("href", "date")]) {
             stringr::str_split_fixed("[，：]", 4) %>%
             as.data.frame()
         if (all(diagnosed$V3 == "" & diagnosed$V4 == "")) {
-              names(diagnosed) <- c("病例", "地区", "年龄", "性别")
-          } else {
-              names(diagnosed) <- c("病例", "性别", "年龄", "地区")
-          }
+            names(diagnosed) <- c("病例", "地区", "年龄", "性别")
+        } else {
+            names(diagnosed) <- c("病例", "性别", "年龄", "地区")
+        }
         diagnosed <- diagnosed[, c("病例", "性别", "年龄", "地区")]
         diagnosed$日期 <- dd$日期
         is.baby <- grepl("月龄", diagnosed$年龄)
         diagnosed$年龄[is.baby] <- as.integer(gsub("月龄", "", diagnosed$年龄[is.baby])) / 12
         diagnosed$年龄[!is.baby] <- as.integer(gsub("岁", "", diagnosed$年龄[!is.baby]))
-        # tmp <- "居住于闵行区龙吴路永德小区"
-        # diagnosed$地区 <- gsub("(居住于)|(居住地为)(.+区).*", "\\3", diagnosed$地区)
+        # "居住于闵行区龙吴路永德小区"
         diagnosed$地区 <- str_extract(diagnosed$地区, "(?<=于|为).{2,3}?区")
         diagnosed
     })
@@ -100,10 +98,10 @@ extract_info <- function(urls = d.basic[, c("href", "date")]) {
             stringr::str_split_fixed("[，：]", 4) %>%
             as.data.frame()
         if (all(asymptomatic$V3 == "" & asymptomatic$V4 == "")) {
-              names(asymptomatic) <- c("病例", "地区", "年龄", "性别")
-          } else {
-              names(asymptomatic) <- c("病例", "性别", "年龄", "地区")
-          }
+            names(asymptomatic) <- c("病例", "地区", "年龄", "性别")
+        } else {
+            names(asymptomatic) <- c("病例", "性别", "年龄", "地区")
+        }
         asymptomatic <- asymptomatic[, c("病例", "性别", "年龄", "地区")]
         asymptomatic$日期 <- dd$日期
         is.baby <- grepl("月龄", asymptomatic$年龄)

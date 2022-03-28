@@ -39,11 +39,11 @@ plot.new <- function(d.new = d.new,
         ylab("病例数") +
         theme(
             text = element_text(family = "Kai"),
-            axis.text.x=element_text(angle=60, hjust=1),
+            axis.text.x = element_text(angle = 60, hjust = 1),
             legend.title = element_blank(),
             legend.position = c("top")
         ) +
-        scale_x_date(date_breaks = "1 day", date_labels =  "%m月%d日")
+        scale_x_date(date_breaks = "1 day", date_labels = "%m月%d日")
     if (is_log) {
         p <- p + scale_y_continuous(trans = "log10")
     }
@@ -72,9 +72,11 @@ plot.ratio <- function(d.ratio = d.basic[d.basic$非管控区域病例比例 < 1
             title = "非管控区域病例比例",
             x = "日期", y = "%"
         ) +
-        theme(text = element_text(family = "Kai"),
-              axis.text.x=element_text(angle=60, hjust=1)) +
-        scale_x_date(date_breaks = "1 day", date_labels =  "%m月%d日")
+        theme(
+            text = element_text(family = "Kai"),
+            axis.text.x = element_text(angle = 60, hjust = 1)
+        ) +
+        scale_x_date(date_breaks = "1 day", date_labels = "%m月%d日")
     p
 }
 
@@ -107,12 +109,14 @@ plot.district <- function(d.info = info$确诊信息,
             title = title,
             x = "日期", y = "病例数"
         ) +
-        theme(text = element_text(family = "Kai"),
-              axis.text.x=element_text(angle=60, hjust=1)) +
-        scale_x_date(date_breaks = "1 day", date_labels =  "%m月%d日")
+        theme(
+            text = element_text(family = "Kai"),
+            axis.text.x = element_text(angle = 60, hjust = 1)
+        ) +
+        scale_x_date(date_breaks = "1 day", date_labels = "%m月%d日")
     if (is_log) {
-          p <- p + scale_y_continuous(trans = "log10")
-      }
+        p <- p + scale_y_continuous(trans = "log10")
+    }
     p
 }
 
@@ -141,9 +145,11 @@ plot.by.group <- function(d.info = info$确诊信息,
             title = title,
             x = group, y = "年龄"
         ) +
-        theme(text = element_text(family = "Kai"),
-              axis.text.x=element_text(angle=60, hjust=1)) +
-        scale_x_date(date_breaks = "1 day", date_labels =  "%m月%d日")
+        theme(
+            text = element_text(family = "Kai"),
+            axis.text.x = element_text(angle = 60, hjust = 1)
+        ) +
+        scale_x_date(date_breaks = "1 day", date_labels = "%m月%d日")
     p
 }
 

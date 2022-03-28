@@ -15,10 +15,10 @@ web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
     # 数据追加的情况
     if (add) {
         if (!exists("d.old")) {
-              stop("原有数据不存在")
-          } else {
-              latest.date <- max(d.old$date)
-          }
+            stop("原有数据不存在")
+        } else {
+            latest.date <- max(d.old$date)
+        }
     }
 
     # 遍历页面数
@@ -32,7 +32,6 @@ web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
     for (i in seq_along(urls)) {
         index.page <- read_html(urls[i])
         nodes <- index.page %>% html_elements(".uli16 a")
-        # browser()
         update.time <- c(
             update.time,
             index.page %>% html_elements(".time") %>% html_text()
@@ -63,12 +62,12 @@ web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
     ),
     format = "%Y年%m月%d日"
     )
-    # browser()
     idx.latest <- which(d$date > latest.date)
     ttl <- ttl[idx.latest]
     d <- d[idx.latest, ]
-    if (nrow(d) == 0)
-        return(d.old)
+    if (nrow(d) == 0) {
+          return(d.old)
+      }
 
     d$href <- paste0("http://wsjkw.sh.gov.cn", d$href)
 
@@ -120,7 +119,6 @@ web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
     # 无症状感染者1455，男，21岁，居住于长宁区，均为本市闭环隔离管控人员，其间新冠病毒核酸检测结果异常，经市疾控中心复核结果为阳性。
     # 无症状感染者1580，男，27岁，居住于杨浦区，在风险人群筛查中发现新冠病毒核酸检测结果异常，即被隔离管控。
     num.closed <- sapply(seq_len(nrow(d)), function(i) {
-        # browser()
         url <- d$href[i]
         index.page <- read_html(url)
         article <- index.page %>%
@@ -131,25 +129,20 @@ web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
         # 无症状感染者2338—无症状感染者2363，居住于崇明区，均为本市闭环隔离管控人员
         pat.closed <- ".+无症状感染者(\\d+)，.+闭环隔离管控人员.+"
         as.integer(gsub2(pat.closed, "\\1", article))
-        # 风险人群筛查调查模式
-        # pat.crisis <- ".+无症状感染者(\\d+)，.+风险人群筛查.+"
-        # num.crisis <- gsub2(pat.crisis, "\\1", article)
     })
     d$无症状闭环隔离管控人数 <- num.closed
 
     d$无症状风险人群筛查人数 <- d$新增本土无症状感染者 - d$无症状闭环隔离管控人数
     d$非管控区域病例比例 <- d$无症状风险人群筛查人数 / d$新增本土无症状感染者 * 100
     d[d$date >= MIN.DATE, ]
-    # browser()
     if (add) {
-          rbind(d, d.old)
-      } else {
-          d
-      }
+        rbind(d, d.old)
+    } else {
+        d
+    }
 }
 
 if (TRUE) {
-    # source("web_crawler.r")
     fn <- "上海疫情感染信息一览.csv"
     message("读取：", fn)
     d.basic <- read.csv(fn)

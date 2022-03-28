@@ -9,13 +9,12 @@ if (!require(shiny)) install.packages("shiny", repos = "http://cran.us.r-project
 if (!require(shinyWidgets)) install.packages("shinyWidgets", repos = "http://cran.us.r-project.org")
 if (!require(magrittr)) install.packages("magrittr", repos = "http://cran.us.r-project.org")
 
-# browser()
-message("导入画图函数")
+message("0. 导入画图函数")
 source("plot.r")
-message("爬取上海卫健委网站")
+message("1. 爬取上海卫健委网站")
 source("web_crawler.r")
 
-message("提取确诊和无症状感染者信息")
+message("2. 提取确诊和无症状感染者信息")
 source("extract_info.r")
 
 # 总体数据一览
@@ -28,6 +27,7 @@ out_cols <- c(
 )
 
 # Use a fluid Bootstrap layout
+message("3. 网站启动")
 ui <- bootstrapPage(
     tags$head(includeHTML("gtag.html")),
     navbarPage(
