@@ -43,3 +43,4 @@ src/src.Rproj
 shanghai_covid19.Rproj
 *.rdata
 /bak/
+/app/rsconnect/

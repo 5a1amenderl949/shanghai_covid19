@@ -9,7 +9,8 @@ save.plot <- function(p,
 }
 
 # 每日新增人数图
-plot.new <- function(d.new = d.new) {
+plot.new <- function(d.new = d.new,
+                     is_log = FALSE) {
     p <- ggplot(d.new) +
         geom_line(aes(x = date, y = value, colour = variable)) +
         xlab("日期") +
@@ -19,6 +20,8 @@ plot.new <- function(d.new = d.new) {
             legend.title = element_blank(),
             legend.position = c("top")
         )
+    if (is_log)
+        p <- p + scale_y_continuous(trans="log10")
     p
 }
 
@@ -57,7 +60,8 @@ if (FALSE) {
 # 按区域画每日新增人数
 plot.district <- function(d.info = info$确诊信息,
                           title = "按区域分每日新增人数",
-                          is.cumsum = FALSE) {
+                          is.cumsum = FALSE,
+                          is_log = FALSE) {
     dd <- aggregate(
         d.info$病例,
         list(日期 = d.info$日期, 地区 = d.info$地区),
@@ -74,6 +78,8 @@ plot.district <- function(d.info = info$确诊信息,
             x = "日期", y = "病例数"
         ) +
         theme(text = element_text(family = "Kai"))
+    if (is_log)
+        p <- p + scale_y_continuous(trans="log10")
     p
 }
 

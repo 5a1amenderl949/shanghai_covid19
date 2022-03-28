@@ -21,7 +21,6 @@ web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
           }
     }
 
-
     # 遍历页面数
     page.seq <- 2:page.len
     # 遍历网页url作成
@@ -68,6 +67,8 @@ web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
     idx.latest <- which(d$date > latest.date)
     ttl <- ttl[idx.latest]
     d <- d[idx.latest, ]
+    if (nrow(d) == 0)
+        return(d.old)
 
     d$href <- paste0("http://wsjkw.sh.gov.cn", d$href)
 
@@ -114,7 +115,7 @@ web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
         "\\1",
         ttl[need.fix]
     ))
-    d$`新增本土确诊（含无症状）` <- d$新增本土新冠肺炎确诊病例 + d$新增本土无症状感染者
+    d$`新增本土确诊含无症状` <- d$新增本土新冠肺炎确诊病例 + d$新增本土无症状感染者
 
     # 无症状感染者1455，男，21岁，居住于长宁区，均为本市闭环隔离管控人员，其间新冠病毒核酸检测结果异常，经市疾控中心复核结果为阳性。
     # 无症状感染者1580，男，27岁，居住于杨浦区，在风险人群筛查中发现新冠病毒核酸检测结果异常，即被隔离管控。
@@ -139,6 +140,7 @@ web_crawler <- function(url = "http://wsjkw.sh.gov.cn/yqtb/",
     d$无症状风险人群筛查人数 <- d$新增本土无症状感染者 - d$无症状闭环隔离管控人数
     d$非管控区域病例比例 <- d$无症状风险人群筛查人数 / d$新增本土无症状感染者 * 100
     d[d$date >= MIN.DATE, ]
+    # browser()
     if (add) {
           rbind(d, d.old)
       } else {
